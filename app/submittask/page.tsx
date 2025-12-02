@@ -28,6 +28,7 @@ export default function SubmitTaskPage() {
   const [authed, setAuthed] = useState(false);
   const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
   const [title, setTitle] = useState("");
+  const [coverPrompt, setCoverPrompt] = useState("");
   const [description, setDescription] = useState("");
   const [xpRewards, setXpRewards] = useState<XpReward[]>([
     { column: "knowledge", xp: 10 },
@@ -79,6 +80,10 @@ export default function SubmitTaskPage() {
       setMessage("Title is required and must be <= 80 characters.");
       return;
     }
+    if (!coverPrompt.trim()) {
+      setMessage("Please provide a cover prompt.");
+      return;
+    }
     if (!description.trim() || description.length > 220) {
       setMessage("Description is required and must be <= 220 characters.");
       return;
@@ -103,6 +108,7 @@ export default function SubmitTaskPage() {
           title: title.trim(),
           description: description.trim(),
           frequency,
+          cover_prompt: coverPrompt.trim(),
           xp_rewards: xpRewards,
         }),
       });
@@ -192,6 +198,17 @@ export default function SubmitTaskPage() {
               value={title}
               maxLength={80}
               onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-md"
+            />
+            <label className="block text-sm font-medium mb-1">
+              Cover prompt (for the image)
+            </label>
+            <input
+              type="text"
+              value={coverPrompt}
+              onChange={(e) => setCoverPrompt(e.target.value)}
+              maxLength={120}
+              placeholder="Cozy study nook at sunrise"
               className="w-full px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-md"
             />
           </div>
